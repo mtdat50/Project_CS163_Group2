@@ -28,7 +28,7 @@ void Events() {
         DWORD eventsNumber = 0;
         DWORD readEventsNumber = 0;
 
-        HANDLE ConsoleInput=GetStdHandle(STD_INPUT_HANDLE);
+        HANDLE ConsoleInput = GetStdHandle(STD_INPUT_HANDLE);
         GetNumberOfConsoleInputEvents(ConsoleInput, &eventsNumber);
 
         if(eventsNumber) {

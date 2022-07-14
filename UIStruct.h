@@ -23,28 +23,31 @@ struct label {
 
 
 struct rollList {
-    int x, y, width, height;
-    int origin;
-    vector< label > buttonList;
-    vector< label > labelList;
-    label *curButton;
+    int x, y, labelx;
+    int nItemsPerPage;
+    int highlightedBGColor;
+    vector< string > buttonList;
+    vector< string > labelList;
+    int curItem;
 
     rollList();
 
-    // void move();
-    // void draw(int highlightedBGColor);
+    void move(WORD step);
+    void draw();
+    void clear();
 };
 
 
-struct GUIPage {
+struct UIPage {
     vector< label > buttonList;
     vector< label > labelList;
     rollList viewList;
 
+    bool focusOnViewList;
     label *curButton;
     int highlightedBGColor;
 
-    GUIPage();
+    UIPage();
 
     void draw();
     void move(WORD step);
