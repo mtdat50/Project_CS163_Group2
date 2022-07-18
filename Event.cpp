@@ -3,24 +3,16 @@
 
 void Controller(KEY_EVENT_RECORD key) {
 
-    // if(key.bKeyDown)//if the keys is pressed
-    // {
-    //     switch (key.wVirtualKeyCode) // which key is pressed
-    //     {
-    //         case VK_UP://when pressed arrow up
-    //         break;
+    if(key.bKeyDown)//if the keys is pressed
+    {
+        switch (curPage) // which page user are interacting with
+        {
+        case MAIN_MENU_PAGE:
+            mainMenuInteraction(key.wVirtualKeyCode);
+            break;
 
-
-    //         case VK_DOWN:
-    //         break;
-            
-    //         case VK_RETURN:
-    //         break;
-
-    //         case VK_ESCAPE:
-    //         break;
-    //     }
-    // }
+        }
+    }
 }
 
 void Events() {
@@ -36,8 +28,10 @@ void Events() {
             ReadConsoleInput(ConsoleInput, IREventBuffer, eventsNumber, &readEventsNumber);
 
             for(DWORD i = 0; i < eventsNumber; ++i)
-                if (IREventBuffer[i].EventType == KEY_EVENT)
+                if (IREventBuffer[i].EventType == KEY_EVENT) {
                     Controller(IREventBuffer[i].Event.KeyEvent);
+                    // updateUI();
+                }
         }
     }
 }

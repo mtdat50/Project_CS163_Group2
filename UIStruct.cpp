@@ -88,7 +88,7 @@ void rollList::draw() {
 
     for (int i = begin; i < end; ++i) {
         int item_y = y + (i - begin) * 3;
-        int color = 15, bgcolor = 0;
+        int color = textColor, bgcolor = 0;
 
         if (i == curItem) bgcolor = highlightedBGColor;
 
@@ -119,7 +119,7 @@ void rollList::draw() {
 
 UIPage::UIPage() {
     focusOnViewList = false;
-    curButton = nullptr;
+    curButton = -1;
     highlightedBGColor = 2;
 }
 
@@ -144,11 +144,11 @@ void UIPage::move(WORD step) {
             return;
 
         if (focusOnViewList) {
-            curButton->bgcolor = highlightedBGColor;
+            buttonList[curButton].bgcolor = highlightedBGColor;
             focusOnViewList = false;
         }
         else {
-            curButton->bgcolor = 0;
+            buttonList[curButton].bgcolor = 0;
             focusOnViewList = true;
         }
     }
@@ -162,18 +162,16 @@ void UIPage::move(WORD step) {
         if (buttonList.empty())
             return;
 
-        curButton->bgcolor = 0;
+        buttonList[curButton].bgcolor = 0;
 
-        int n = buttonList.size(),
-            curIndex = curButton - &buttonList[0],
-            newIndex;
-        if (step == VK_DOWN && step == VK_RIGHT)
-            newIndex = (curIndex + 1) % n;
-        else if (step == VK_UP && step == VK_LEFT)
-            newIndex = (curIndex - 1 + n) % n;
+        int n = buttonList.size(), newIndex;
+        if (step == VK_DOWN || step == VK_RIGHT)
+            newIndex = (curButton + 1) % n;
+        else if (step == VK_UP || step == VK_LEFT)
+            newIndex = (curButton - 1 + n) % n;
 
-        curButton = &buttonList[newIndex];
-        curButton->bgcolor = highlightedBGColor;
+        curButton = newIndex;
+        buttonList[curButton].bgcolor = highlightedBGColor;
     }
 
 

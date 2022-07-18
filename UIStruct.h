@@ -25,6 +25,7 @@ struct label {
 struct rollList {
     int x, y, labelx;
     int nItemsPerPage;
+    int textColor;
     int highlightedBGColor;
     vector< string > buttonList;
     vector< string > labelList;
@@ -44,7 +45,7 @@ struct UIPage {
     rollList viewList;
 
     bool focusOnViewList;
-    label *curButton;
+    int curButton;
     int highlightedBGColor;
 
     UIPage();
