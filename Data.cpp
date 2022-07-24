@@ -2,9 +2,11 @@
 
 
 UIPage mainMenuPage,
-       datasetPage,
-       favouritePage,
-       searchHistoryPage;
+       favoritePage,
+       searchHistoryPage,
+       quizPage;
+
+UIDataSetPage datasetPage;
 
 int curPage;
 

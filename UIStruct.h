@@ -54,3 +54,22 @@ struct UIPage {
     void move(WORD step);
     void clear();
 };
+
+
+struct UIDataSetPage {
+    vector< label > buttonList;
+    vector< label > labelList;
+    rollList viewList;
+
+    bool focusOnViewList;
+    int curButton;
+    int highlightedBGColor;
+
+    trie trieDataSet;
+
+    UIDataSetPage();
+
+    void draw();
+    void move(WORD step);
+    void clear();
+};

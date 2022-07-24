@@ -124,6 +124,13 @@ UIPage::UIPage() {
 }
 
 
+UIDataSetPage::UIDataSetPage() {
+    focusOnViewList = false;
+    curButton = -1;
+    highlightedBGColor = 2;
+}
+
+
 void UIPage::draw() {
     for (label x : buttonList)
         x.draw();
