@@ -21,4 +21,4 @@ extern UIPage mainMenuPage,
 extern int curPage;
 
 
-extern vector< pair< string, trie > > dataset; // < name, data >
+extern vector< pair< string, trie > > dataSetListA, dataSetListB; // A = word - def/ B = def - word

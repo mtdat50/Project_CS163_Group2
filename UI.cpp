@@ -18,7 +18,7 @@ void createMainMenu() {
     viewList.highlightedBGColor = 2;
     viewList.textColor = 11;
 
-    for (pair< string, trie > s : dataset)
+    for (pair< string, trie > s : dataSetListA)
         viewList.buttonList.push_back(s.first);
 }
 

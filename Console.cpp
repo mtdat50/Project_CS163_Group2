@@ -79,3 +79,11 @@ void setBTColor(int x, int y,int color, int background) //not relating
     SetColor(color);
 	SetBGColor(background);
 }
+
+
+void clearLine(int xbegin, int y, int xend, int background) {
+	setBTColor(xbegin, y, background, background);
+	for (int i = xbegin; i <= xend; ++i)
+		std::cout << ' ';
+	setBTColor(xbegin, y, background, background);
+}

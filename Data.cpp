@@ -9,4 +9,4 @@ UIPage mainMenuPage,
 int curPage;
 
 
-vector< pair< string, trie > > dataset; // < name, data >
+vector< pair< string, trie > > dataSetListA, dataSetListB; // < name, data >
