@@ -13,3 +13,10 @@ void drawMainMenu();
 
 
 void updateUI();
+
+
+void createDataSetMenu(string dataMenu);
+
+
+void createQuizMenu();
+
