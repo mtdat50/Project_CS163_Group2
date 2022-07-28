@@ -3,17 +3,23 @@
 
 
 void mainMenuInteraction(WORD action) {
-    // clrscr();
     clearLine(45, 4, ConsoleWidth, 0);
     clearLine(45, 5, ConsoleWidth, 0);
 
 
-    if (VK_LEFT <= action && action <= VK_DOWN || action == VK_TAB)
+    if (VK_LEFT <= action && action <= VK_DOWN || action == VK_TAB) {
         mainMenuPage.move(action);
+        drawMainMenu();
 
+    }
+    else if (action == VK_RETURN) { // pressing enter
+        if (mainMenuPage.focusOnViewList) { // selecting an data set
+            curDataSet = mainMenuPage.viewList.curItem;
+            curPage = DATA_SET_PAGE;
+            updateUI();
 
-    if (action == VK_RETURN) {
-        if (!mainMenuPage.focusOnViewList) {
+        }
+        else { // option row
             string text = mainMenuPage.buttonList[mainMenuPage.curButton].text;
 
             if (text == "Exit")
@@ -86,10 +92,24 @@ void mainMenuInteraction(WORD action) {
                 }
             }
 
-
+            drawMainMenu();
         }
-    }
-    
 
-    drawMainMenu();
+    }
+    else if (action == VK_DELETE && mainMenuPage.focusOnViewList) {
+        auto buttonIt = mainMenuPage.viewList.buttonList.begin() + mainMenuPage.viewList.curItem;
+        auto dataItA = dataSetListA.begin() + mainMenuPage.viewList.curItem,
+             dataItB = dataSetListB.begin() + mainMenuPage.viewList.curItem;
+
+
+        mainMenuPage.viewList.buttonList.erase(buttonIt);
+        dataSetListA.erase(dataItA);
+        dataSetListB.erase(dataItB);
+
+        clrscr();
+        drawMainMenu();
+
+    }
+
+
 }

@@ -7,16 +7,11 @@ using namespace std;
 
 
 void createMainMenu();
+void createDataSetMenu(string dataMenu); // compile error
+void createQuizMenu();
 
 
 void drawMainMenu();
 
 
 void updateUI();
-
-
-void createDataSetMenu(string dataMenu);
-
-
-void createQuizMenu();
-
