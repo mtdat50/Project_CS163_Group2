@@ -50,7 +50,7 @@ void updateUI() {
     }
 }
 
-
+/*
 void createDataSetMenu(string dataName) {
     datasetPage.clear();
 
@@ -68,14 +68,14 @@ void createDataSetMenu(string dataName) {
     viewList.highlightedBGColor = 2;
     viewList.textColor = 11;
 
-    for (pair< string, trie > s : dataset)
+    for (pair< string, trie > s : dataSetListA)
         if (s.first == dataName)
         {
             dataSetTrie = s.second;
             break;
         }
 }
-
+*/
 
 void createQuizMenu() {
     quizPage.clear();
@@ -96,7 +96,7 @@ void createQuizMenu() {
     viewList.highlightedBGColor = 2;
     viewList.textColor = 11;
 
-    for (pair< string, trie > s : dataset)
+    for (pair< string, trie > s : dataSetListA)
         viewList.buttonList.push_back(s.first);
 }
 

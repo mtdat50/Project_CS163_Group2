@@ -18,9 +18,10 @@ extern UIPage mainMenuPage,
        searchHistoryPage,
        quizPage;
 
-extern UIDataSetPage datasetPage;
+// extern UIDataSetPage datasetPage;
 
 extern int curPage;
+extern int curDataSet;
 
 
 extern vector< pair< string, trie > > dataSetListA, dataSetListB; // A = word - def/ B = def - word

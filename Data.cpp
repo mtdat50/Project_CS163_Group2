@@ -6,9 +6,10 @@ UIPage mainMenuPage,
        searchHistoryPage,
        quizPage;
 
-UIDataSetPage datasetPage;
+// UIDataSetPage datasetPage;
 
 int curPage;
+int curDataSet;
 
 
 vector< pair< string, trie > > dataSetListA, dataSetListB; // < name, data >

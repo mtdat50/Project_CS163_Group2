@@ -55,7 +55,7 @@ struct UIPage {
     void clear();
 };
 
-
+/*
 struct UIDataSetPage {
     vector< label > buttonList;
     vector< label > labelList;
@@ -73,3 +73,4 @@ struct UIDataSetPage {
     void move(WORD step);
     void clear();
 };
+*/
