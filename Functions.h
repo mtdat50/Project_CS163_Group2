@@ -2,6 +2,9 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <fstream>
+#include <sstream>
+#include <filesystem>
 
 #include "Trie.h"
 
@@ -9,7 +12,7 @@
 using namespace std;
 
 // not created
-// return false if data in file is wrong formated, true othewise
+// return false if data in file is wrong formatted, true otherwise
 bool loadNewDataSet(string filepath, vector< pair < string, string > > &data);
 
 // not created
