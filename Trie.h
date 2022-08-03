@@ -6,11 +6,11 @@ using namespace std;
 
 struct node
 {
-
     node *child[256];
     string definition;
 
     node();
+    ~node();
 };
 
 struct trie
@@ -23,7 +23,4 @@ struct trie
     void insert(string word, string definition);
     void erase(string word);
     string search(string word);
-
-
-    ~trie();
 };

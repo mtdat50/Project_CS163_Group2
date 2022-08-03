@@ -34,7 +34,7 @@ struct rollList {
     rollList();
 
     void move(WORD step);
-    void draw();
+    void draw(bool focusOn);
     void clear();
 };
 

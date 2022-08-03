@@ -69,7 +69,7 @@ void rollList::move(WORD step) {
 
     case VK_LEFT:
         if (curPage == 0)
-            curItem = n - 1 - n % nItemsPerPage;
+            curItem = n - (n % nItemsPerPage);
         else
             curItem += -indexInCurPage - nItemsPerPage;
         break;
@@ -78,7 +78,7 @@ void rollList::move(WORD step) {
 }
 
 
-void rollList::draw() {
+void rollList::draw(bool focusOn) {
     int n = buttonList.size(),
         curPage = curItem / nItemsPerPage,
         indexInCurPage = curItem % nItemsPerPage;
@@ -90,7 +90,7 @@ void rollList::draw() {
         int item_y = y + (i - begin) * 3;
         int color = textColor, bgcolor = 0;
 
-        if (i == curItem) bgcolor = highlightedBGColor;
+        if (i == curItem && focusOn) bgcolor = highlightedBGColor;
 
         setBTColor(x, item_y, color, bgcolor);
         cout << buttonList[i];
@@ -138,7 +138,7 @@ void UIPage::draw() {
     for (label x : labelList)
         x.draw();
 
-    viewList.draw();
+    viewList.draw(focusOnViewList);
 
     SetBGColor(0);
     //preventing wrong color bug on the console screen after using clrsr
@@ -147,7 +147,7 @@ void UIPage::draw() {
 
 void UIPage::move(WORD step) {
     if (step == VK_TAB) { // switching between main page and viewList
-        if (!curButton || viewList.curItem == -1)
+        if (curButton == -1 || viewList.curItem == -1)
             return;
 
         if (focusOnViewList) {

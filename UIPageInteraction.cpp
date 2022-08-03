@@ -25,7 +25,7 @@ void mainMenuInteraction(WORD action) {
             if (text == "Exit")
                 exit(0);
 
-
+            // create new data set
             setBTColor(45, 2, 15, 0);
             cout << "Create a new data set";
             setBTColor(45, 4, 15, 2);
@@ -56,40 +56,37 @@ void mainMenuInteraction(WORD action) {
             if (filepath == "") {
                 setBTColor(45, 5, 15, 0);
                 cout << "Creating cancelled.";
+
             }
             else { // file exists
                 vector< pair< string, string > > data;
-                bool validData = loadNewDataSet(filepath, data);
+                loadNewDataSet(filepath, data);
                 
-                if (!validData) {
-                    setBTColor(45, 5, 15, 0);
-                    cout << "Data is invalid.";
-                }
-                else { // data is valid
-                    clearLine(45, 4, ConsoleWidth, 0);
-                    setBTColor(45, 4, 15, 2);
-                    cout << "Data set name:";
-                    
-                    string dataSetName;
-                    do { // input data set name
-                        clearLine(56, 4, ConsoleWidth, 0);
-                        setBTColor(56, 4, 15, 0);
 
-                        char ch;
-                        while ((ch = cin.get()) != '\n')
-                            dataSetName += ch;
-                    } while (dataSetName == "");
+                setBTColor(45, 4, 15, 2);
+                cout << "Data set name:";
+                
+                string dataSetName;
+                do { // input data set name
+                    clearLine(60, 4, ConsoleWidth, 0);
+                    setBTColor(60, 4, 15, 0);
 
-                    dataSetListA.push_back({dataSetName, trie()});
-                    buildTrie(data, dataSetListA.back().second, 'A');
+                    char ch;
+                    while ((ch = cin.get()) != '\n')
+                        dataSetName += ch;
+                } while (dataSetName == "");
+                mainMenuPage.viewList.buttonList.push_back(dataSetName);
+                mainMenuPage.viewList.curItem = mainMenuPage.viewList.buttonList.size() - 1;
 
-                    dataSetListB.push_back({dataSetName, trie()});
-                    buildTrie(data, dataSetListB.back().second, 'B');
+                dataSetListA.push_back({dataSetName, trie()});
+                buildTrie(data, dataSetListA.back().second, 'A');
 
-                    
-                    setBTColor(45, 5, 15, 0);
-                    cout << "New data set created successfully.";
-                }
+                dataSetListB.push_back({dataSetName, trie()});
+                buildTrie(data, dataSetListB.back().second, 'B');
+                
+                clrscr();
+                setBTColor(45, 5, 15, 0);
+                cout << "New data set created successfully.";
             }
 
             drawMainMenu();

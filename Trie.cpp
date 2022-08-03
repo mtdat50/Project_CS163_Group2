@@ -5,6 +5,11 @@ node::node() {
     definition = "";
 }
 
+node::~node() {
+    for (int i = 0; i < 256; ++i) 
+        delete child[i];
+}
+
 // ==========================================================================
 
 trie::trie() {
@@ -51,20 +56,4 @@ void trie::erase(string word) {
     node *cur = travel(word);
 
     if (cur) cur->definition = "";
-}
-
-
-trie::~trie() {
-    function< void(node *) > deleteEveryNode;
-    
-    deleteEveryNode = [&](node *cur) -> void {
-        if (!cur) return;
-
-        for (int i = 0; i < 256; ++i) 
-            deleteEveryNode(cur->child[i]);
-        
-        delete cur;
-    };
-
-    deleteEveryNode(root);
 }

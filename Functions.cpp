@@ -1,35 +1,31 @@
 #include "Functions.h"
 
 
-bool loadNewDataSet(string filepath, vector< pair < string, string > > &data) {
-    // if (!filesystem::exists(filepath))
-    //     return false;
+void loadNewDataSet(string filepath, vector< pair < string, string > > &data) {
+    ifstream fin (filepath);
+    bool ok = true;
+    
+    while (!fin.eof()) {
+        string word, def;
 
-    // ifstream fin (filepath);
-    // string s;
-    // while (!fin.eof())
-    // {
-    //     getline(fin, s);
-    //     stringstream str(s);
-    //     string w, def;
-    //     getline(str, w, ' ');
-    //     getline(str, def);
-    //     data.push_back({ w, def });
-    // }
+        getline(fin, word);
 
-    return true; // not done
+        int cnt = count(word.begin(), word.end(), (char) 9); // count 'tab' character
+        if (cnt != 1) continue;
+
+        int tabIndex = word.find((char) 9);
+        def = word.substr(tabIndex + 1, word.size() - tabIndex - 1);
+        word = word.substr(0, tabIndex);
+        data.push_back({word, def});
+    }
+
+    fin.close();
 }
 
 void buildTrie(vector< pair < string, string > > &data, trie &dataSet, char type = 'A') {
-    // for(int i = 0; i < data.size(); ++i)
-    // {
-    //     if (type == 'A')
-    //     {
-    //         dataSet.insert(data[i].first, data[i].second);
-    //     }
-    //     else
-    //     {
-    //         dataSet.insert(data[i].second, data[i].first);
-    //     }
-    // }
+    for(pair< string, string > item : data)
+        if (type == 'A')
+            dataSet.insert(item.first, item.second);
+        else
+            dataSet.insert(item.second, item.first);
 }
