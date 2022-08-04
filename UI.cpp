@@ -18,8 +18,8 @@ void createMainMenu() {
     viewList.highlightedBGColor = 2;
     viewList.textColor = 11;
 
-    for (pair< string, trie > s : dataSetListA)
-        viewList.buttonList.push_back(s.first);
+    for (dataSet s : dataSetList)
+        viewList.buttonList.push_back(s.name);
 }
 
 
@@ -34,26 +34,6 @@ void drawMainMenu() {
     }
     mainMenuPage.draw();
 }
-
-
-
-void updateUI() {
-    clrscr();
-
-    switch (curPage)
-    {
-    case MAIN_MENU_PAGE:
-        createMainMenu();
-        drawMainMenu();
-        break;
-    
-    case DATA_SET_PAGE:
-        // create();
-        // draw();
-        break;
-    }
-}
-
 /*
 void createDataSetMenu(string dataName) {
     datasetPage.clear();
@@ -100,7 +80,27 @@ void createQuizMenu() {
     viewList.highlightedBGColor = 2;
     viewList.textColor = 11;
 
-    for (pair< string, trie > s : dataSetListA)
-        viewList.buttonList.push_back(s.first);
+    for (dataSet s : dataSetList)
+        viewList.buttonList.push_back(s.name);
 }
 
+
+
+
+
+void updateUI() {
+    clrscr();
+
+    switch (curPage)
+    {
+    case MAIN_MENU_PAGE:
+        createMainMenu();
+        drawMainMenu();
+        break;
+    
+    case VIEW_DATA_PAGE:
+        // create();
+        // draw();
+        break;
+    }
+}

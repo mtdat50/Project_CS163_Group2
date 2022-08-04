@@ -15,7 +15,7 @@ void mainMenuInteraction(WORD action) {
     else if (action == VK_RETURN) { // pressing enter
         if (mainMenuPage.focusOnViewList) { // selecting an data set
             curDataSet = mainMenuPage.viewList.curItem;
-            curPage = DATA_SET_PAGE;
+            curPage = VIEW_DATA_PAGE;
             updateUI();
 
         }
@@ -59,8 +59,13 @@ void mainMenuInteraction(WORD action) {
 
             }
             else { // file exists
-                vector< pair< string, string > > data;
-                loadNewDataSet(filepath, data);
+                dataSetList.push_back(dataSet()); // init new data set
+
+                vector< pair< string, string > > &wordList = dataSetList.back().wordList;
+                loadNewDataSet(filepath, wordList);
+
+                buildTrie(wordList, dataSetList.back().wordTrie, 'A');
+                buildTrie(wordList, dataSetList.back().defTrie, 'B');
                 
 
                 setBTColor(45, 4, 15, 2);
@@ -78,11 +83,6 @@ void mainMenuInteraction(WORD action) {
                 mainMenuPage.viewList.buttonList.push_back(dataSetName);
                 mainMenuPage.viewList.curItem = mainMenuPage.viewList.buttonList.size() - 1;
 
-                dataSetListA.push_back({dataSetName, trie()});
-                buildTrie(data, dataSetListA.back().second, 'A');
-
-                dataSetListB.push_back({dataSetName, trie()});
-                buildTrie(data, dataSetListB.back().second, 'B');
                 
                 clrscr();
                 setBTColor(45, 5, 15, 0);
@@ -95,13 +95,10 @@ void mainMenuInteraction(WORD action) {
     }
     else if (action == VK_DELETE && mainMenuPage.focusOnViewList) {
         auto buttonIt = mainMenuPage.viewList.buttonList.begin() + mainMenuPage.viewList.curItem;
-        auto dataItA = dataSetListA.begin() + mainMenuPage.viewList.curItem,
-             dataItB = dataSetListB.begin() + mainMenuPage.viewList.curItem;
-
+        auto dataIt = dataSetList.begin() + mainMenuPage.viewList.curItem;
 
         mainMenuPage.viewList.buttonList.erase(buttonIt);
-        dataSetListA.erase(dataItA);
-        dataSetListB.erase(dataItB);
+        dataSetList.erase(dataIt);
 
         clrscr();
         drawMainMenu();

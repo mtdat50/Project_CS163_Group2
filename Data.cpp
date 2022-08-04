@@ -12,4 +12,4 @@ int curPage;
 int curDataSet;
 
 
-vector< pair< string, trie > > dataSetListA, dataSetListB; // < name, data >
+vector< dataSet > dataSetList;
