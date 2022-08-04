@@ -57,3 +57,19 @@ void trie::erase(string word) {
 
     if (cur) cur->definition = "";
 }
+
+
+void trie::cleanMemory() {
+    function< int(node *) > clean = [&](node *cur) -> int {
+        if (!cur) return 0;
+
+        int words = root->definition != "";
+        for (int i = 0; i < 256; ++i)
+            words += clean(cur->child[i]);
+        
+        if (words == 0) delete cur;
+        return words;
+    };
+
+    clean(root);
+}

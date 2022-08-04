@@ -23,4 +23,5 @@ struct trie
     void insert(string word, string definition);
     void erase(string word);
     string search(string word);
+    void cleanMemory();
 };
