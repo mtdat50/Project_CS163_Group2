@@ -24,14 +24,14 @@ const int MAIN_MENU_PAGE = 1,
           SEARCH_HISTORY_PAGE = 4;
 
 extern UIPage mainMenuPage,
-       favoriteListPage,
-       searchHistoryPage,
-       quizPage;
+              viewDataPage,
+              favoriteListPage,
+              searchHistoryPage,
+              quizPage;
 
-// extern UIDataSetPage datasetPage;
 
 extern int curPage;
-extern int curDataSet;
+extern int curDataSetIndex;
 
 
 extern vector< dataSet > dataSetList;

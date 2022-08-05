@@ -23,7 +23,7 @@ struct label {
 
 
 struct rollList {
-    int x, y, labelx;
+    int x, y, width, labelx;
     int nItemsPerPage;
     int textColor;
     int highlightedBGColor;

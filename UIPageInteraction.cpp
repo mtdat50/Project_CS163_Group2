@@ -14,7 +14,7 @@ void mainMenuInteraction(WORD action) {
     }
     else if (action == VK_RETURN) { // pressing enter
         if (mainMenuPage.focusOnViewList) { // selecting an data set
-            curDataSet = mainMenuPage.viewList.curItem;
+            curDataSetIndex = mainMenuPage.viewList.curItem;
             curPage = VIEW_DATA_PAGE;
             updateUI();
 
@@ -26,6 +26,7 @@ void mainMenuInteraction(WORD action) {
                 exit(0);
 
             // create new data set
+            set_cursor(true);
             setBTColor(45, 2, 15, 0);
             cout << "Create a new data set";
             setBTColor(45, 4, 15, 2);
@@ -80,8 +81,8 @@ void mainMenuInteraction(WORD action) {
                     while ((ch = cin.get()) != '\n')
                         dataSetName += ch;
                 } while (dataSetName == "");
+                dataSetList.back().name = dataSetName;
                 mainMenuPage.viewList.buttonList.push_back(dataSetName);
-                mainMenuPage.viewList.curItem = mainMenuPage.viewList.buttonList.size() - 1;
 
                 
                 clrscr();
@@ -89,6 +90,7 @@ void mainMenuInteraction(WORD action) {
                 cout << "New data set created successfully.";
             }
 
+            set_cursor(false);
             drawMainMenu();
         }
 
@@ -107,3 +109,15 @@ void mainMenuInteraction(WORD action) {
 
 
 }
+
+
+
+void viewDataInteraction(WORD action) {
+    if (VK_LEFT <= action && action <= VK_DOWN || action == VK_TAB) {
+        viewDataPage.move(action);
+        drawViewDataPage();
+
+    }
+}
+
+

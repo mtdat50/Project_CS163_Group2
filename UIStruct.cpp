@@ -27,7 +27,7 @@ void label::draw() {
 // ==========================================================================
 
 rollList::rollList() {
-    nItemsPerPage = x = y = labelx = 0;
+    nItemsPerPage = x = y = width = labelx = 0;
     highlightedBGColor = 2;
     curItem = -1;
 }
@@ -89,6 +89,7 @@ void rollList::draw(bool focusOn) {
     for (int i = begin; i < end; ++i) {
         int item_y = y + (i - begin) * 3;
         int color = textColor, bgcolor = 0;
+        clearLine(x, item_y, width, bgcolor);
 
         if (i == curItem && focusOn) bgcolor = highlightedBGColor;
 
@@ -97,17 +98,17 @@ void rollList::draw(bool focusOn) {
 
         if (!labelList.empty()) {
             if (labelList[i].size() <= 100) {
-                setBTColor(x, item_y, color, bgcolor);
+                setBTColor(x + labelx, item_y, color, bgcolor);
                 cout << labelList[i];
             }
             else {
                 string s = labelList[i].substr(0, 100);
 
-                setBTColor(x, item_y, color, bgcolor);
+                setBTColor(x + labelx, item_y, color, bgcolor);
                 cout << s;
 
                 s = labelList[i].substr(100, labelList[i].size() - 100);
-                setBTColor(x, item_y + 1, color, bgcolor);
+                setBTColor(x + labelx, item_y + 1, color, bgcolor);
                 cout << s;
             }
         }
@@ -147,8 +148,11 @@ void UIPage::draw() {
 
 void UIPage::move(WORD step) {
     if (step == VK_TAB) { // switching between main page and viewList
-        if (curButton == -1 || viewList.curItem == -1)
+        if (buttonList.empty() || (viewList.buttonList.empty() && viewList.labelList.empty()))
             return;
+        
+        if (curButton == -1) curButton = 0;
+        if (viewList.curItem == -1) viewList.curItem = 0;
 
         if (focusOnViewList) {
             buttonList[curButton].bgcolor = highlightedBGColor;

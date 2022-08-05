@@ -2,14 +2,14 @@
 
 
 UIPage mainMenuPage,
+       viewDataPage,
        favoritePage,
        searchHistoryPage,
        quizPage;
 
-// UIDataSetPage datasetPage;
 
 int curPage;
-int curDataSet;
+int curDataSetIndex;
 
 
 vector< dataSet > dataSetList;

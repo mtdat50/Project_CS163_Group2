@@ -12,6 +12,7 @@ void createQuizMenu();
 
 
 void drawMainMenu();
+void drawViewDataPage();
 
 
 void updateUI();

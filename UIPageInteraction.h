@@ -9,3 +9,5 @@
 
 
 void mainMenuInteraction(WORD action);
+
+void viewDataInteraction(WORD action);

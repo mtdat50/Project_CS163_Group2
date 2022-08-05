@@ -11,6 +11,9 @@ void Controller(KEY_EVENT_RECORD key) {
             mainMenuInteraction(key.wVirtualKeyCode);
             break;
 
+        case VIEW_DATA_PAGE:
+            viewDataInteraction(key.wVirtualKeyCode);
+            break;
         }
     }
 }
