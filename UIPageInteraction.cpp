@@ -8,6 +8,9 @@ void mainMenuInteraction(WORD action) {
 
 
     if (VK_LEFT <= action && action <= VK_DOWN || action == VK_TAB) {
+        if (mainMenuPage.focusOnViewList && (action == VK_LEFT || action == VK_RIGHT))
+            for (int i = mainMenuPage.viewList.y; i < ConsoleHeight - 1; ++i)
+                clearLine(0, i, ConsoleWidth, 0);
         mainMenuPage.move(action);
         drawMainMenu();
 
@@ -113,9 +116,83 @@ void mainMenuInteraction(WORD action) {
 
 
 void viewDataInteraction(WORD action) {
+    clearLine(0, 5, ConsoleWidth, 0);
+
     if (VK_LEFT <= action && action <= VK_DOWN || action == VK_TAB) {
+
+        if (viewDataPage.focusOnViewList && (action == VK_LEFT || action == VK_RIGHT))
+            for (int i = viewDataPage.viewList.y; i < ConsoleHeight - 1; ++i)
+                clearLine(0, i, ConsoleWidth, 0);
+
         viewDataPage.move(action);
         drawViewDataPage();
+        
+    }
+    else if (action == VK_RETURN) {
+        string text = viewDataPage.buttonList[viewDataPage.curButton].text;
+
+        if (text == "Return") {
+            curPage = MAIN_MENU_PAGE;
+            updateUI();
+
+        }
+        else if (text == "Add a word") {
+            setBTColor(3, 3, 15, 0);
+            cout << "Add a word";
+            setBTColor(3, 4, 15, 2);
+            cout << "Word:";
+            setBTColor(3, 5, 15, 0);
+            cout << "Definition:";
+
+            setBTColor(9, 4, 15, 0);
+            set_cursor(true);
+            string word; // input word
+            char ch;
+            while ((ch = cin.get()) != '\n')
+                word += ch;
+
+
+            string def;
+            if (word != "") { // input definition
+                setBTColor(3, 4, 15, 0);
+                cout << "Word:";
+                setBTColor(3, 5, 15, 2);
+                cout << "Definition:";
+                
+                setBTColor(15, 5, 15, 0);
+                char ch;
+                while ((ch = cin.get()) != '\n')
+                    def += ch;
+            }
+            set_cursor(false);
+            setBTColor(3, 3, 15, 2);
+            cout << "Add a word";
+
+
+            clearLine(0, 4, ConsoleWidth, 0);
+            clearLine(0, 5, ConsoleWidth, 0);
+            clearLine(0, 6, ConsoleWidth, 0);
+            setBTColor(3, 5, 15, 0);
+            if (def == "")
+                cout << "Adding cancelled.";
+            else {
+                cout << "Adding successful.";
+
+                dataSetList[curDataSetIndex].wordList.push_back({word, def});
+                dataSetList[curDataSetIndex].wordTrie.insert(word, def);
+                dataSetList[curDataSetIndex].defTrie.insert(def, word);
+
+                viewDataPage.viewList.buttonList.push_back(word);
+                viewDataPage.viewList.labelList.push_back(def);
+                viewDataPage.viewList.curItem = viewDataPage.viewList.buttonList.size() - 1;
+
+                
+                for (int i = viewDataPage.viewList.y; i < ConsoleHeight - 1; ++i)
+                    clearLine(0, i, ConsoleWidth, 0);
+                viewDataPage.draw();
+            }
+        }
+
 
     }
 }

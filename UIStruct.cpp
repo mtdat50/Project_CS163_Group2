@@ -89,7 +89,6 @@ void rollList::draw(bool focusOn) {
     for (int i = begin; i < end; ++i) {
         int item_y = y + (i - begin) * 3;
         int color = textColor, bgcolor = 0;
-        clearLine(x, item_y, width, bgcolor);
 
         if (i == curItem && focusOn) bgcolor = highlightedBGColor;
 
@@ -97,21 +96,14 @@ void rollList::draw(bool focusOn) {
         cout << buttonList[i];
 
         if (!labelList.empty()) {
-            if (labelList[i].size() <= 100) {
-                setBTColor(x + labelx, item_y, color, bgcolor);
-                cout << labelList[i];
-            }
-            else {
-                string s = labelList[i].substr(0, 100);
+            size_t labelwidth = width - labelx;
 
-                setBTColor(x + labelx, item_y, color, bgcolor);
-                cout << s;
-
-                s = labelList[i].substr(100, labelList[i].size() - 100);
-                setBTColor(x + labelx, item_y + 1, color, bgcolor);
-                cout << s;
+            for (int j = 0; j * labelwidth < labelList[i].size(); ++j) {
+                setBTColor(x + labelx, item_y + j, color, bgcolor);
+                cout << labelList[i].substr(j * labelwidth, min(labelwidth, labelList[i].size() - j * labelwidth));
             }
         }
+
     }
 }
 
@@ -133,8 +125,13 @@ UIDataSetPage::UIDataSetPage() {
 */
 
 void UIPage::draw() {
-    for (label x : buttonList)
+    for (int i = 0; i < (int) buttonList.size(); ++i) {
+        label x = buttonList[i];
+        if (!focusOnViewList && i == curButton)
+            x.bgcolor = highlightedBGColor;
+        
         x.draw();
+    }
         
     for (label x : labelList)
         x.draw();

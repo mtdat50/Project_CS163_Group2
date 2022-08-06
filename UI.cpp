@@ -6,7 +6,7 @@ void createMainMenu() {
     vector< label > &bList = mainMenuPage.buttonList;
     rollList &viewList = mainMenuPage.viewList;
 
-    bList.push_back(label("Create a new data set", 45, 2, 15, 2));
+    bList.push_back(label("Create a new data set", 45, 2, 15, 0));
     mainMenuPage.curButton = 0;
 
     bList.push_back(label("Exit", 85, 2, 15, 0));
@@ -48,7 +48,7 @@ void createViewData() {
     viewList.x = 6;
     viewList.labelx = 25;
     viewList.y = 9;
-    viewList.width = ConsoleWidth - viewList.x + 1;
+    viewList.width = ConsoleWidth - viewList.x;
     viewList.nItemsPerPage = 10;
     viewList.highlightedBGColor = 2;
     viewList.textColor = 15;
@@ -91,11 +91,11 @@ void drawMainMenu() {
     for (int i = 1; i < ConsoleWidth - 1; ++i)
         cout << '_';
     
-    mainMenuPage.draw();
     if (mainMenuPage.viewList.buttonList.empty()) {
         setBTColor(50, 9, 11, 0);
         cout << "There is no data.";
     }
+    mainMenuPage.draw();
 }
 
 void drawViewDataPage() {
@@ -103,11 +103,11 @@ void drawViewDataPage() {
     for (int i = 1; i < ConsoleWidth - 1; ++i)
         cout << '_';
 
-    viewDataPage.draw();
     if (viewDataPage.viewList.buttonList.empty()) {
         setBTColor(50, 9, 11, 0);
         cout << "There is no data.";
     }
+    viewDataPage.draw();
 }
 
 
