@@ -3,10 +3,9 @@
 
 UIPage mainMenuPage,
        viewDataPage,
-       favoritePage,
-       searchHistoryPage,
        quizPage;
 
+bool displayingMainList;
 
 int curPage;
 int curDataSetIndex;

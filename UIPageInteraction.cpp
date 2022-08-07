@@ -8,10 +8,10 @@ void mainMenuInteraction(WORD action) {
 
 
     if (VK_LEFT <= action && action <= VK_DOWN || action == VK_TAB) {
+        mainMenuPage.move(action);
         if (mainMenuPage.focusOnViewList && (action == VK_LEFT || action == VK_RIGHT))
             for (int i = mainMenuPage.viewList.y; i < ConsoleHeight - 1; ++i)
                 clearLine(0, i, ConsoleWidth, 0);
-        mainMenuPage.move(action);
         drawMainMenu();
 
     }
@@ -119,16 +119,16 @@ void viewDataInteraction(WORD action) {
     clearLine(0, 5, ConsoleWidth, 0);
 
     if (VK_LEFT <= action && action <= VK_DOWN || action == VK_TAB) {
+        viewDataPage.move(action);
 
         if (viewDataPage.focusOnViewList && (action == VK_LEFT || action == VK_RIGHT))
             for (int i = viewDataPage.viewList.y; i < ConsoleHeight - 1; ++i)
                 clearLine(0, i, ConsoleWidth, 0);
 
-        viewDataPage.move(action);
         drawViewDataPage();
         
     }
-    else if (action == VK_RETURN) {
+    else if (action == VK_RETURN && !viewDataPage.focusOnViewList) {
         string text = viewDataPage.buttonList[viewDataPage.curButton].text;
 
         if (text == "Return") {
@@ -165,9 +165,6 @@ void viewDataInteraction(WORD action) {
                     def += ch;
             }
             set_cursor(false);
-            setBTColor(3, 3, 15, 2);
-            cout << "Add a word";
-
 
             clearLine(0, 4, ConsoleWidth, 0);
             clearLine(0, 5, ConsoleWidth, 0);
@@ -185,15 +182,89 @@ void viewDataInteraction(WORD action) {
                 viewDataPage.viewList.buttonList.push_back(word);
                 viewDataPage.viewList.labelList.push_back(def);
                 viewDataPage.viewList.curItem = viewDataPage.viewList.buttonList.size() - 1;
-
+                viewDataPage.focusOnViewList = true;
                 
                 for (int i = viewDataPage.viewList.y; i < ConsoleHeight - 1; ++i)
                     clearLine(0, i, ConsoleWidth, 0);
                 viewDataPage.draw();
             }
+
+            setBTColor(3, 3, 15, 2);
+            cout << "Add a word";
+        }
+        else if (text == "Search by word") {
+            setBTColor(20, 4, 15, 0);
+            set_cursor(true);
+
+            string word; // input word
+            char ch;
+            while ((ch = cin.get()) != '\n')
+                word += ch;
+
+            set_cursor(false);
+
+            if (word == "") {
+                clearLine(0, 4, ConsoleWidth, 0);
+                setBTColor(20, 5, 15, 0);
+                cout << "Searching cancelled";
+            }
+            else {
+                vector< pair< string, string > > searchResult;
+                dataSetList[curDataSetIndex].wordTrie.prefixSearch(word, searchResult);
+
+                viewDataPage.viewList.buttonList.clear();
+                viewDataPage.viewList.labelList.clear();
+                for (pair< string, string > w : searchResult) {
+                    viewDataPage.viewList.buttonList.push_back(w.first);
+                    viewDataPage.viewList.labelList.push_back(w.second);
+                }
+
+                if (viewDataPage.viewList.buttonList.empty())
+                    viewDataPage.viewList.curItem = -1;
+                else {
+                    viewDataPage.focusOnViewList = true;
+                    viewDataPage.viewList.curItem = 0;
+                }
+                
+
+                for (int i = viewDataPage.viewList.y; i < ConsoleHeight - 1; ++i)
+                    clearLine(0, i, ConsoleWidth, 0);
+                viewDataPage.buttonList[viewDataPage.curButton].bgcolor = 0;
+
+                displayingMainList = false;
+                drawViewDataPage();
+                
+            }
+
         }
 
 
+    }
+    else if (action == VK_RETURN && viewDataPage.focusOnViewList) {
+        //edit a word
+            //not done
+    }
+    else if (action == VK_ESCAPE && !displayingMainList) { // return back to the main words list
+        viewDataPage.viewList.buttonList.clear();
+        viewDataPage.viewList.labelList.clear();
+        
+        for (pair< string, string > word : dataSetList[curDataSetIndex].wordList) {
+            viewDataPage.viewList.buttonList.push_back(word.first);
+            viewDataPage.viewList.labelList.push_back(word.second);
+        }
+
+        if (viewDataPage.viewList.buttonList.empty())
+            viewDataPage.viewList.curItem = -1;
+        else {
+            viewDataPage.viewList.curItem = 0;
+        }
+
+        displayingMainList = true;
+
+        clearLine(0, 4, ConsoleWidth, 0);
+        for (int i = viewDataPage.viewList.y; i < ConsoleHeight - 1; ++i)
+            clearLine(0, i, ConsoleWidth, 0);
+        drawViewDataPage();
     }
 }
 

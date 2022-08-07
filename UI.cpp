@@ -12,7 +12,7 @@ void createMainMenu() {
     bList.push_back(label("Exit", 85, 2, 15, 0));
 
 
-    viewList.x = 50;
+    viewList.x = 55;
     viewList.y = 9;
     viewList.width = ConsoleWidth - viewList.x + 1;
     viewList.nItemsPerPage = 10;
@@ -35,7 +35,7 @@ void createViewData() {
 
     lList.push_back(label(curDataSet.name, (ConsoleWidth - curDataSet.name.size()) / 2 - 5, 1, 15, 11));
 
-    bList.push_back(label("Add a word", 3, 3, 15, 2));
+    bList.push_back(label("Add a word", 3, 3, 15, 0));
     viewDataPage.curButton = 0;
     bList.push_back(label("Search by word", 20, 3, 15, 0));
     bList.push_back(label("Search by definition", 41, 3, 15, 0));
@@ -57,31 +57,32 @@ void createViewData() {
         viewList.buttonList.push_back(word.first);
         viewList.labelList.push_back(word.second);
     }
+    displayingMainList = true;
 }
 
 
-void createQuizMenu() {
-    quizPage.clear();
+// void createQuizMenu() {
+//     quizPage.clear();
 
-    vector< label > &bList = quizPage.buttonList;
-    rollList &viewList = quizPage.viewList;
+//     vector< label > &bList = quizPage.buttonList;
+//     rollList &viewList = quizPage.viewList;
 
-    bList.push_back(label("Guess word", 25, 2, 15, 2));
-    mainMenuPage.curButton = 0;
+//     bList.push_back(label("Guess word", 25, 2, 15, 2));
+//     mainMenuPage.curButton = 0;
 
-    bList.push_back(label("Guess definition", 55, 2, 15, 0));
-    bList.push_back(label("Return", 85, 2, 15, 0));
+//     bList.push_back(label("Guess definition", 55, 2, 15, 0));
+//     bList.push_back(label("Return", 85, 2, 15, 0));
 
 
-    viewList.x = 50;
-    viewList.y = 9;
-    viewList.nItemsPerPage = 10;
-    viewList.highlightedBGColor = 2;
-    viewList.textColor = 11;
+//     viewList.x = 50;
+//     viewList.y = 9;
+//     viewList.nItemsPerPage = 10;
+//     viewList.highlightedBGColor = 2;
+//     viewList.textColor = 11;
 
-    for (dataSet s : dataSetList)
-        viewList.buttonList.push_back(s.name);
-}
+//     for (dataSet s : dataSetList)
+//         viewList.buttonList.push_back(s.name);
+// }
 
 
 

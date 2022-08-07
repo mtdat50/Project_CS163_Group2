@@ -51,6 +51,28 @@ string trie::search(string word) {
     return "";
 }
 
+void trie::prefixSearch(string prefix, vector< pair< string, string > > &result) {
+    node *cur = travel(prefix);
+    string word = prefix;
+
+    function< void(node *, string &, vector< pair< string, string > > &) > dfs = 
+    [&](node *cur, string &word, vector< pair< string, string > > &result) -> void {
+
+        if (!cur) return;
+        
+        if (cur->definition != "")
+            result.push_back({word, cur->definition});
+        
+        for (int i = 0; i < 256; ++i) {
+            word += (char) i;
+            dfs(cur->child[i], word, result);
+            word.pop_back();
+        }
+    };
+
+    dfs(cur, word, result);
+}
+
 
 void trie::erase(string word) {
     node *cur = travel(word);

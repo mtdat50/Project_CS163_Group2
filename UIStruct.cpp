@@ -129,6 +129,8 @@ void UIPage::draw() {
         label x = buttonList[i];
         if (!focusOnViewList && i == curButton)
             x.bgcolor = highlightedBGColor;
+        else
+            x.bgcolor = 0;
         
         x.draw();
     }
@@ -181,9 +183,6 @@ void UIPage::move(WORD step) {
         curButton = newIndex;
         buttonList[curButton].bgcolor = highlightedBGColor;
     }
-
-
-    draw();
 }
 
 

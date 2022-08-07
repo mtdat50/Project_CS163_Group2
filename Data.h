@@ -25,9 +25,9 @@ const int MAIN_MENU_PAGE = 1,
 
 extern UIPage mainMenuPage,
               viewDataPage,
-              favoriteListPage,
-              searchHistoryPage,
               quizPage;
+
+extern bool displayingMainList;// used for VIEW_DATA_PAGE
 
 
 extern int curPage;
