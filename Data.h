@@ -19,9 +19,7 @@ const int ConsoleWidth = 130,
           ConsoleHeight = 40;
 
 const int MAIN_MENU_PAGE = 1,
-          VIEW_DATA_PAGE = 2,
-          FAVORITE_LIST_PAGE = 3,
-          SEARCH_HISTORY_PAGE = 4;
+          VIEW_DATA_PAGE = 2;
 
 extern UIPage mainMenuPage,
               viewDataPage,
