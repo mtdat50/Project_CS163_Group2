@@ -108,6 +108,12 @@ void drawViewDataPage() {
         setBTColor(50, 9, 11, 0);
         cout << "There is no data.";
     }
+    else {
+        for (int i = viewDataPage.viewList.y; i < ConsoleHeight - 1; ++i) {
+            setBTColor(viewDataPage.viewList.x + viewDataPage.viewList.labelx - 2, i, 9, 0);
+            cout << '|';
+        }
+    }
     viewDataPage.draw();
 }
 
