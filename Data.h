@@ -8,7 +8,7 @@
 struct dataSet {
     string name;
     trie wordTrie, defTrie;
-    vector< pair< string, string > > wordList;
+    vector< pair< string, string > > wordList, searchHistory, favoriteList;
 
     dataSet() = default;
 };
