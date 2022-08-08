@@ -280,8 +280,35 @@ void searchByDef() {
 
 }
 
+void viewSearchHistory() {
+    viewDataPage.viewList.buttonList.clear();
+    viewDataPage.viewList.labelList.clear();
+    for (pair< string, string > w : dataSetList[curDataSetIndex].searchHistory) {
+        viewDataPage.viewList.buttonList.push_back(w.first);
+        viewDataPage.viewList.labelList.push_back(w.second);
+    }
+
+    if (viewDataPage.viewList.buttonList.empty())
+        viewDataPage.viewList.curItem = -1;
+    else {
+        viewDataPage.focusOnViewList = true;
+        viewDataPage.viewList.curItem = 0;
+    }
+    
+
+    for (int i = viewDataPage.viewList.y; i < ConsoleHeight - 1; ++i)
+        clearLine(0, i, ConsoleWidth, 0);
+    
+    drawViewDataPage();
+
+    displayingMainList = false;
+}
+
+
 void viewDataInteraction(WORD action) {
     clearLine(0, 5, ConsoleWidth, 0);
+    if (!viewDataPage.focusOnViewList)
+        clearLine(0, 4, ConsoleWidth, 0);
 
     if (VK_LEFT <= action && action <= VK_DOWN || action == VK_TAB) {
         viewDataPage.move(action);
@@ -307,6 +334,8 @@ void viewDataInteraction(WORD action) {
             searchByWord();
         else if (text == "Search by definition")
             searchByDef();
+        else if (text == "Search history")
+            viewSearchHistory();
 
 
     }
