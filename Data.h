@@ -25,7 +25,9 @@ extern UIPage mainMenuPage,
               viewDataPage,
               quizPage;
 
-extern bool displayingMainList;// used for VIEW_DATA_PAGE
+extern bool displayingMainList,// used for VIEW_DATA_PAGE
+            displayingSearchHistory,
+            displayingFavoriteList;
 
 
 extern int curPage;

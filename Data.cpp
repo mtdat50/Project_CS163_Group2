@@ -5,7 +5,9 @@ UIPage mainMenuPage,
        viewDataPage,
        quizPage;
 
-bool displayingMainList;
+bool displayingMainList,
+    displayingSearchHistory,
+    displayingFavoriteList;
 
 int curPage;
 int curDataSetIndex;

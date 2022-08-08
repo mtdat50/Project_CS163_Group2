@@ -178,6 +178,8 @@ void addAWord() {
 
     setBTColor(3, 3, 15, 2);
     cout << "Add a word";
+    
+    displayingMainList = true;
 }
 
 void searchByWord() {
@@ -223,13 +225,15 @@ void searchByWord() {
         for (int i = viewDataPage.viewList.y; i < ConsoleHeight - 1; ++i)
             clearLine(0, i, ConsoleWidth, 0);
 
-        displayingMainList = false;
         drawViewDataPage();
         
     }
 }
 
 void searchByDef() {
+    int &curItem = viewDataPage.viewList.curItem;
+    dataSet &curDataSet = dataSetList[curDataSetIndex];
+
     setBTColor(41, 4, 15, 0);
     set_cursor(true);
 
@@ -247,12 +251,12 @@ void searchByDef() {
     }
     else {
         vector< pair< string, string > > searchResult;
-        dataSetList[curDataSetIndex].defTrie.prefixSearch(def, searchResult);
+        curDataSet.defTrie.prefixSearch(def, searchResult);
 
         if (searchResult.size() == 1)
-            dataSetList[curDataSetIndex].searchHistory.push_back({searchResult[0].second, searchResult[0].first});
+            curDataSet.searchHistory.push_back({searchResult[0].second, searchResult[0].first});
         else
-            dataSetList[curDataSetIndex].searchHistory.push_back({"", def});
+            curDataSet.searchHistory.push_back({"", def});
 
 
         viewDataPage.viewList.buttonList.clear();
@@ -263,17 +267,16 @@ void searchByDef() {
         }
 
         if (viewDataPage.viewList.buttonList.empty())
-            viewDataPage.viewList.curItem = -1;
+            curItem = -1;
         else {
             viewDataPage.focusOnViewList = true;
-            viewDataPage.viewList.curItem = 0;
+            curItem = 0;
         }
         
 
         for (int i = viewDataPage.viewList.y; i < ConsoleHeight - 1; ++i)
             clearLine(0, i, ConsoleWidth, 0);
 
-        displayingMainList = false;
         drawViewDataPage();
         
     }
@@ -301,10 +304,13 @@ void viewSearchHistory() {
     
     drawViewDataPage();
 
-    displayingMainList = false;
+    displayingSearchHistory = true;
 }
 
 void viewFavoriteList() {
+    int &curItem = viewDataPage.viewList.curItem;
+    dataSet &curDataSet = dataSetList[curDataSetIndex];
+
     viewDataPage.viewList.buttonList.clear();
     viewDataPage.viewList.labelList.clear();
     for (pair< string, string > w : dataSetList[curDataSetIndex].favoriteList) {
@@ -325,10 +331,62 @@ void viewFavoriteList() {
     
     drawViewDataPage();
 
-    displayingMainList = false;
+    displayingFavoriteList = true;
+}
+
+void deleteAWord() {
+    int &curItem = viewDataPage.viewList.curItem;
+    dataSet &curDataSet = dataSetList[curDataSetIndex];
+
+    string word = curDataSet.wordList[curItem].first,
+            def = curDataSet.wordList[curItem].second;
+    pair< string, string > p = {word, def};
+
+    curDataSet.wordList.erase(curDataSet.wordList.begin() + curItem);
+    curDataSet.wordTrie.erase(word);
+    curDataSet.defTrie.erase(def);
+    
+    for (size_t i = 0; i < curDataSet.favoriteList.size(); ++i)
+        if (curDataSet.favoriteList[i] == p) {
+            curDataSet.favoriteList.erase(curDataSet.favoriteList.begin() + i);
+            break;
+        }
+
+    viewDataPage.viewList.buttonList.erase(viewDataPage.viewList.buttonList.begin() + curItem);
+    viewDataPage.viewList.labelList.erase(viewDataPage.viewList.labelList.begin() + curItem);
+
+    if (curItem == viewDataPage.viewList.buttonList.size())
+        --curItem;
+    
+    for (int i = viewDataPage.viewList.y; i < ConsoleHeight - 1; ++i)
+        clearLine(0, i, ConsoleWidth, 0);
+    drawViewDataPage();
+}
+
+void deleteFromFavoriteList() {
+    int &curItem = viewDataPage.viewList.curItem;
+    dataSet &curDataSet = dataSetList[curDataSetIndex];
+
+
+    curDataSet.favoriteList.erase(curDataSet.favoriteList.begin() + curItem);
+    
+    viewDataPage.viewList.buttonList.erase(viewDataPage.viewList.buttonList.begin() + curItem);
+    viewDataPage.viewList.labelList.erase(viewDataPage.viewList.labelList.begin() + curItem);
+
+    if (curItem == viewDataPage.viewList.buttonList.size())
+        --curItem;
+
+    for (int i = viewDataPage.viewList.y; i < ConsoleHeight - 1; ++i)
+        clearLine(0, i, ConsoleWidth, 0);
+    drawViewDataPage();
 }
 
 void viewDataInteraction(WORD action) {
+
+    int &curItem = viewDataPage.viewList.curItem;
+    dataSet &curDataSet = dataSetList[curDataSetIndex];
+
+
     clearLine(0, 5, ConsoleWidth, 0);
     if (!viewDataPage.focusOnViewList)
         clearLine(0, 4, ConsoleWidth, 0);
@@ -344,6 +402,9 @@ void viewDataInteraction(WORD action) {
         
     }
     else if (action == VK_RETURN && !viewDataPage.focusOnViewList) {
+        displayingMainList = false;
+        displayingSearchHistory = false;
+        displayingFavoriteList = false;
         string text = viewDataPage.buttonList[viewDataPage.curButton].text;
 
         if (text == "Return") {
@@ -372,22 +433,40 @@ void viewDataInteraction(WORD action) {
         viewDataPage.viewList.buttonList.clear();
         viewDataPage.viewList.labelList.clear();
         
-        for (pair< string, string > word : dataSetList[curDataSetIndex].wordList) {
+        for (pair< string, string > word : curDataSet.wordList) {
             viewDataPage.viewList.buttonList.push_back(word.first);
             viewDataPage.viewList.labelList.push_back(word.second);
         }
 
         if (viewDataPage.viewList.buttonList.empty())
-            viewDataPage.viewList.curItem = -1;
+            curItem = -1;
         else 
-            viewDataPage.viewList.curItem = 0;
+            curItem = 0;
 
         displayingMainList = true;
+        displayingSearchHistory = false;
+        displayingFavoriteList = false;
 
         clearLine(0, 4, ConsoleWidth, 0);
         for (int i = viewDataPage.viewList.y; i < ConsoleHeight - 1; ++i)
             clearLine(0, i, ConsoleWidth, 0);
         drawViewDataPage();
+    }
+    else if (action == 'F' && viewDataPage.focusOnViewList
+    && !displayingSearchHistory && !displayingFavoriteList) {
+        string word = viewDataPage.viewList.buttonList[curItem],
+                def = viewDataPage.viewList.labelList[curItem];
+        pair< string, string > p = {word, def};
+
+        if (find(curDataSet.favoriteList.begin(), curDataSet.favoriteList.end(), p) ==
+                                                    curDataSet.favoriteList.end())
+            curDataSet.favoriteList.push_back(p);
+    }
+    else if (action == VK_DELETE && viewDataPage.focusOnViewList) {
+        if (displayingMainList)
+            deleteAWord();
+        else if (displayingFavoriteList)
+            deleteFromFavoriteList();
     }
 }
 

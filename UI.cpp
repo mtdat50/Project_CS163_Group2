@@ -58,6 +58,8 @@ void createViewData() {
         viewList.labelList.push_back(word.second);
     }
     displayingMainList = true;
+    displayingSearchHistory = false;
+    displayingFavoriteList = false;
 }
 
 
