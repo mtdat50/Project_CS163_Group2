@@ -47,6 +47,8 @@ void addNewDataSet() {
         buildTrie(wordList, dataSetList.back().wordTrie, 'A');
         buildTrie(wordList, dataSetList.back().defTrie, 'B');
         
+        wordList.clear();
+        dataSetList.back().wordTrie.prefixSearch("", wordList);
 
         setBTColor(45, 4, 15, 2);
         cout << "Data set name:";
@@ -67,6 +69,8 @@ void addNewDataSet() {
         clrscr();
         setBTColor(45, 5, 15, 0);
         cout << "New data set created successfully.";
+
+        saveADataSet(dataSetList.back(), dataSetList.size() - 1);
     }
 
     set_cursor(false);
@@ -105,12 +109,17 @@ void mainMenuInteraction(WORD action) {
 
     }
     else if (action == VK_DELETE && mainMenuPage.focusOnViewList) { // erase a data set
-        auto buttonIt = mainMenuPage.viewList.buttonList.begin() + mainMenuPage.viewList.curItem;
-        auto dataIt = dataSetList.begin() + mainMenuPage.viewList.curItem;
+        int &curItem = mainMenuPage.viewList.curItem;
+        auto buttonIt = mainMenuPage.viewList.buttonList.begin() + curItem;
+        auto dataIt = dataSetList.begin() + curItem;
 
         mainMenuPage.viewList.buttonList.erase(buttonIt);
         dataSetList.erase(dataIt);
 
+        deleteSaveFile(curItem);
+
+        if (mainMenuPage.viewList.buttonList.empty())
+            mainMenuPage.focusOnViewList = false;
         clrscr();
         drawMainMenu();
 
@@ -166,6 +175,8 @@ void addAWord() {
         dataSetList[curDataSetIndex].wordTrie.insert(word, def);
         dataSetList[curDataSetIndex].defTrie.insert(def, word);
 
+        saveADataSet(dataSetList[curDataSetIndex], curDataSetIndex);
+
         viewDataPage.viewList.buttonList.push_back(word);
         viewDataPage.viewList.labelList.push_back(def);
         viewDataPage.viewList.curItem = viewDataPage.viewList.buttonList.size() - 1;
@@ -206,6 +217,8 @@ void searchByWord() {
             dataSetList[curDataSetIndex].searchHistory.push_back(searchResult[0]);
         else
             dataSetList[curDataSetIndex].searchHistory.push_back({word, ""});
+
+        saveADataSet(dataSetList[curDataSetIndex], curDataSetIndex);
 
         viewDataPage.viewList.buttonList.clear();
         viewDataPage.viewList.labelList.clear();
@@ -257,6 +270,8 @@ void searchByDef() {
             curDataSet.searchHistory.push_back({searchResult[0].second, searchResult[0].first});
         else
             curDataSet.searchHistory.push_back({"", def});
+
+        saveADataSet(dataSetList[curDataSetIndex], curDataSetIndex);
 
 
         viewDataPage.viewList.buttonList.clear();
@@ -352,6 +367,9 @@ void deleteAWord() {
             break;
         }
 
+    saveADataSet(dataSetList[curDataSetIndex], curDataSetIndex);
+
+
     viewDataPage.viewList.buttonList.erase(viewDataPage.viewList.buttonList.begin() + curItem);
     viewDataPage.viewList.labelList.erase(viewDataPage.viewList.labelList.begin() + curItem);
 
@@ -373,6 +391,9 @@ void deleteFromFavoriteList() {
     viewDataPage.viewList.buttonList.erase(viewDataPage.viewList.buttonList.begin() + curItem);
     viewDataPage.viewList.labelList.erase(viewDataPage.viewList.labelList.begin() + curItem);
 
+    saveADataSet(dataSetList[curDataSetIndex], curDataSetIndex);
+
+    
     if (curItem == viewDataPage.viewList.buttonList.size())
         --curItem;
 
@@ -459,14 +480,19 @@ void viewDataInteraction(WORD action) {
         pair< string, string > p = {word, def};
 
         if (find(curDataSet.favoriteList.begin(), curDataSet.favoriteList.end(), p) ==
-                                                    curDataSet.favoriteList.end())
+                                                    curDataSet.favoriteList.end()) {
             curDataSet.favoriteList.push_back(p);
+            saveADataSet(dataSetList[curDataSetIndex], curDataSetIndex);
+        }
     }
     else if (action == VK_DELETE && viewDataPage.focusOnViewList) {
         if (displayingMainList)
             deleteAWord();
         else if (displayingFavoriteList)
             deleteFromFavoriteList();
+        
+        if (viewDataPage.viewList.buttonList.empty())
+            viewDataPage.focusOnViewList = false;
     }
 }
 

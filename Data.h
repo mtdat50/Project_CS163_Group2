@@ -5,6 +5,8 @@
 #include "UIStruct.h"
 #include "Trie.h"
 
+using namespace std;
+
 struct dataSet {
     string name;
     trie wordTrie, defTrie;

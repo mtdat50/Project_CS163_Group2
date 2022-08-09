@@ -29,3 +29,136 @@ void buildTrie(vector< pair < string, string > > &data, trie &dataSet, char type
         else
             dataSet.insert(item.second, item.first);
 }
+
+ 
+/// =============================================================================
+void saveTrie(ofstream &fout, node *root) {
+    if (!root) return;
+
+    fout << root->definition << '\n';
+    for (int i = 0; i < 256; ++i)
+        fout << int (root->child[i] != nullptr) << " \n"[i == 255];
+
+    for (int i = 0; i < 256; ++i)
+        saveTrie(fout, root->child[i]);
+}
+
+void saveADataSet(dataSet &curDataSet, int index) {
+    string filepath = "Data/data" + to_string(index);
+    filepath += ".temp";
+    // string filepath = "data0.temp";
+
+    mkdir("Data");
+    ofstream fout(filepath);
+
+    fout << curDataSet.name << '\n';
+    saveTrie(fout, curDataSet.wordTrie.root);
+    saveTrie(fout, curDataSet.defTrie.root);
+
+    fout << curDataSet.searchHistory.size() << '\n';
+    for (pair< string, string > p : curDataSet.searchHistory)
+        fout << p.first << '\n' << p.second << '\n';
+
+    fout << curDataSet.favoriteList.size() << '\n';
+    for (pair< string, string > p : curDataSet.favoriteList)
+        fout << p.first << '\n' << p.second << '\n';
+
+    fout.close();
+}
+
+// void saveData() {
+//     for (size_t i = 0; i < dataSetList.size(); ++i)
+//         saveADataSet(dataSetList[curDataSetIndex], i);
+// }
+
+
+
+void loadTrie(ifstream & fin, node *root) {
+    if (!root) return;
+
+    getline(fin, root->definition);
+    for (int i = 0; i < 256; ++i) {
+        bool exist;
+        fin >> exist;
+
+        if (exist) root->child[i] = new node;
+    }
+    fin.ignore();
+
+    for (int i = 0; i < 256; ++i)
+        loadTrie(fin, root->child[i]);
+}
+
+
+void loadData() {
+    for (size_t i = 0; ; ++i) {
+        string filename = "Data/data" + to_string(i);
+        string filepath = filename + ".txt",
+            filepath_temp = filename + ".temp";
+
+
+        if (filesystem::exists(filepath_temp)) {
+            filesystem::remove(filepath);
+            filesystem::rename(filepath_temp, filepath);
+        }
+        if (!filesystem::exists(filepath)) break; // check stopping
+        
+
+        dataSetList.push_back(dataSet());
+        dataSet &curDataSet = dataSetList.back();
+
+        ifstream fin(filepath);
+
+        fin >> curDataSet.name; fin.ignore();
+        loadTrie(fin, curDataSet.wordTrie.root);
+        loadTrie(fin, curDataSet.defTrie.root);
+
+        curDataSet.wordTrie.prefixSearch("", curDataSet.wordList);
+
+        int n;
+        fin >> n; fin.ignore();
+        for (size_t i = 0; i < n; ++i) {
+            pair< string, string > p;
+            
+            getline(fin, p.first);
+            getline(fin, p.second);
+            curDataSet.searchHistory.push_back(p);
+        }
+
+        fin >> n; fin.ignore();
+        for (size_t i = 0; i < n; ++i) {
+            pair< string, string > p;
+            
+            getline(fin, p.first);
+            getline(fin, p.second);
+            curDataSet.favoriteList.push_back(p);
+        }
+
+        fin.close();
+    }
+}
+
+/// ==============================================================================
+void deleteSaveFile(int index) {
+    string filename = "Data/data" + to_string(index);
+    string filepath = filename + ".txt",
+        filepath_temp = filename + ".temp";
+
+    filesystem::remove(filepath);
+    filesystem::remove(filepath_temp);
+
+    for (int i = index + 1; ; ++i) {
+        string curName = "Data/data" + to_string(index);
+        string curPath = curName + ".txt";
+        string curPath_temp = curName + ".temp";
+
+        if (!filesystem::exists(filepath) && !filesystem::exists(filepath_temp)) //stop
+            break;
+        
+        filesystem::rename(curPath, filepath);
+        filesystem::rename(curPath_temp, filepath_temp);
+
+        filepath = curPath;
+        filepath_temp = curPath_temp;
+    }
+}

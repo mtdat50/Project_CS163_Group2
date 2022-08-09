@@ -1,5 +1,5 @@
 #pragma once
-
+#define WIN32_LEAN_AND_MEAN IDunnoWhatIsThisICopyItFromTheInternetToSolveStrangeErrors
 #include <windows.h>
 #include <conio.h>
 #include <iostream>

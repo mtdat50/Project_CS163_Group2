@@ -3,17 +3,31 @@
 #include <string>
 #include <vector>
 #include <fstream>
-#include <sstream>
 #include <filesystem>
+#include <direct.h>
 
 #include "Trie.h"
+#include "Data.h"
 
 
 using namespace std;
 
-// not created
+
 // return false if data in file is wrong formatted, true otherwise
 void loadNewDataSet(string filepath, vector< pair < string, string > > &data);
 
-// not created
-void buildTrie(vector< pair < string, string > > &data, trie &dataSet, char type); // type = word - def or def - word
+// type = word - def or def - word
+void buildTrie(vector< pair < string, string > > &data, trie &dataSet, char type);
+
+
+/// =============================================================================
+
+void saveADataSet(dataSet &curDataSet, int index);
+
+void saveData();
+
+
+void loadData();
+
+/// ==============================================================================
+void deleteSaveFile(int index);

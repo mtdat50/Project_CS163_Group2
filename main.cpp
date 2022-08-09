@@ -10,6 +10,8 @@ int main() {
     SetWindowSize(ConsoleWidth, ConsoleHeight);
     set_cursor(false);
 
+    loadData();
+    
     curPage = MAIN_MENU_PAGE;
     updateUI();
 

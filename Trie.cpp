@@ -86,8 +86,12 @@ void trie::cleanMemory() {
         if (!cur) return 0;
 
         int words = root->definition != "";
-        for (int i = 0; i < 256; ++i)
-            words += clean(cur->child[i]);
+        for (int i = 0; i < 256; ++i) {
+            int childWords = clean(cur->child[i]);
+
+            if (childWords == 0) cur->child[i] = nullptr;
+            words += childWords;
+        }
         
         if (words == 0) delete cur;
         return words;
