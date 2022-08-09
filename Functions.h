@@ -5,6 +5,7 @@
 #include <fstream>
 #include <filesystem>
 #include <direct.h>
+#include <algorithm>
 
 #include "Trie.h"
 #include "Data.h"
