@@ -5,7 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <filesystem>
-
+#include <algorithm>
 #include "Trie.h"
 
 

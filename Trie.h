@@ -2,6 +2,7 @@
 
 #include <string>
 #include <functional>
+#include <vector>
 using namespace std;
 
 struct node
@@ -18,7 +19,7 @@ struct trie
     node *root;
 
     trie();
-    
+
     node *travel(string word);
     void insert(string word, string definition);
     void erase(string word);
