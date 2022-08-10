@@ -446,9 +446,64 @@ void viewDataInteraction(WORD action) {
 
 
     }
-    else if (action == VK_RETURN && viewDataPage.focusOnViewList) {
-        //edit a definition
-            //not done
+    else if (action == VK_RETURN && viewDataPage.focusOnViewList) { // edit a definition
+        rollList &viewList = viewDataPage.viewList;
+
+        int x = viewList.x + viewList.labelx;
+        int y = viewList.y + (viewList.curItem % viewList.nItemsPerPage) * 3;
+
+        clearLine(x, y, ConsoleWidth - 1, 0);
+        clearLine(x, y + 1, ConsoleWidth - 1, 0);
+        clearLine(x, y + 2, ConsoleWidth - 1, 0);
+
+        setBTColor(x, y, 15, 0);
+        set_cursor(true);
+        
+        string def;
+        char ch;
+        while ((ch = cin.get()) != '\n')
+            def += ch;
+        
+        set_cursor(false);
+
+        setBTColor(3, 5, 15, 0);
+        if (def == "") 
+            cout << "Editting cancelled.";
+        else {
+            cout << "Editting successful.";
+
+            string word = viewList.buttonList[curItem];
+            string oldDef = viewList.labelList[curItem];
+            pair< string, string > p = {word, oldDef};
+
+
+            (curDataSet.wordList.begin() + curItem)->second = def;
+
+            auto it = find(curDataSet.searchHistory.begin(), curDataSet.searchHistory.end(), p);
+            if (it != curDataSet.searchHistory.end())
+                it->second = def;
+
+            it = find(curDataSet.favoriteList.begin(), curDataSet.favoriteList.end(), p);
+            if (it != curDataSet.favoriteList.end())
+                it->second = def;
+
+            curDataSet.wordTrie.erase(word);
+            curDataSet.wordTrie.insert(word, def);
+
+            curDataSet.defTrie.erase(oldDef);
+            curDataSet.defTrie.insert(def, word);
+
+            saveADataSet(curDataSet, curDataSetIndex);
+
+            viewList.labelList[curItem] = def;
+
+            clearLine(0, y, ConsoleWidth - 1, 0);
+            clearLine(0, y + 1, ConsoleWidth - 1, 0);
+            clearLine(0, y + 2, ConsoleWidth - 1, 0);
+
+            drawViewDataPage();
+        }
+
     }
     else if (action == VK_ESCAPE && !displayingMainList) { // return back to the main words list
         viewDataPage.viewList.buttonList.clear();
