@@ -14,3 +14,4 @@ int curDataSetIndex;
 
 
 vector< dataSet > dataSetList;
+vector< dataSet > archivedData;

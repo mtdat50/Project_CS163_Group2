@@ -91,6 +91,8 @@ void loadTrie(ifstream & fin, node *root) {
 
 
 void loadData() {
+    dataSetList.clear();
+
     for (size_t i = 0; ; ++i) {
         string filename = "Data/data" + to_string(i);
         string filepath = filename + ".txt",
@@ -136,6 +138,8 @@ void loadData() {
 
         fin.close();
     }
+
+    archivedData = dataSetList;
 }
 
 /// ==============================================================================
@@ -161,4 +165,15 @@ void deleteSaveFile(int index) {
         filepath = curPath;
         filepath_temp = curPath_temp;
     }
+}
+
+
+void reverseChanges() {
+    for (int i = dataSetList.size() - 1; i >= 0; --i)
+        deleteSaveFile(i);
+    
+    dataSetList = archivedData;
+
+    for (size_t i = 0; i < dataSetList.size(); ++i)
+        saveADataSet(dataSetList[i], i);
 }

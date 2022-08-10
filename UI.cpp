@@ -6,10 +6,11 @@ void createMainMenu() {
     vector< label > &bList = mainMenuPage.buttonList;
     rollList &viewList = mainMenuPage.viewList;
 
-    bList.push_back(label("Create a new data set", 45, 2, 15, 0));
+    bList.push_back(label("Create a new data set", 25, 2, 15, 0));
     mainMenuPage.curButton = 0;
 
-    bList.push_back(label("Exit", 85, 2, 15, 0));
+    bList.push_back(label("Reverse changes", 61, 2, 15, 0));
+    bList.push_back(label("Exit", 92, 2, 15, 0));
 
 
     viewList.x = 55;

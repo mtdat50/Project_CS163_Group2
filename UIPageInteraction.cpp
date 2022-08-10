@@ -6,17 +6,17 @@
 
 void addNewDataSet() {
     set_cursor(true);
-    setBTColor(45, 2, 15, 0);
+    setBTColor(25, 2, 15, 0);
     cout << "Create a new data set";
-    setBTColor(45, 4, 15, 2);
+    setBTColor(25, 4, 15, 2);
     cout << "File path:";
-    setBTColor(45, 5, 15, 0);
+    setBTColor(25, 5, 15, 0);
     cout << "Enter an empty string to cancel.";
 
     string filepath;
     while (true) { // input filepath
-        clearLine(56, 4, ConsoleWidth, 0);
-        setBTColor(56, 4, 15, 0);
+        clearLine(36, 4, ConsoleWidth, 0);
+        setBTColor(36, 4, 15, 0);
 
         char ch;
         filepath = "";
@@ -26,15 +26,15 @@ void addNewDataSet() {
         if (filepath == "" || filesystem::exists(filepath))
             break;
 
-        clearLine(45, 5, ConsoleWidth, 0);
-        setBTColor(45, 5, 15, 0);
+        clearLine(25, 5, ConsoleWidth, 0);
+        setBTColor(25, 5, 15, 0);
         cout << "File is not found. Please re-enter filepath or enter an empty string to cancel.";
     }
 
-    clearLine(45, 4, ConsoleWidth, 0);
-    clearLine(45, 5, ConsoleWidth, 0);
+    clearLine(25, 4, ConsoleWidth, 0);
+    clearLine(25, 5, ConsoleWidth, 0);
     if (filepath == "") {
-        setBTColor(45, 5, 15, 0);
+        setBTColor(25, 5, 15, 0);
         cout << "Creating cancelled.";
 
     }
@@ -50,13 +50,13 @@ void addNewDataSet() {
         wordList.clear();
         dataSetList.back().wordTrie.prefixSearch("", wordList);
 
-        setBTColor(45, 4, 15, 2);
+        setBTColor(25, 4, 15, 2);
         cout << "Data set name:";
         
         string dataSetName;
         do { // input data set name
-            clearLine(60, 4, ConsoleWidth, 0);
-            setBTColor(60, 4, 15, 0);
+            clearLine(40, 4, ConsoleWidth, 0);
+            setBTColor(40, 4, 15, 0);
 
             char ch;
             while ((ch = cin.get()) != '\n')
@@ -67,7 +67,7 @@ void addNewDataSet() {
 
         
         clrscr();
-        setBTColor(45, 5, 15, 0);
+        setBTColor(25, 5, 15, 0);
         cout << "New data set created successfully.";
 
         saveADataSet(dataSetList.back(), dataSetList.size() - 1);
@@ -79,8 +79,8 @@ void addNewDataSet() {
 }
 
 void mainMenuInteraction(WORD action) {
-    clearLine(45, 4, ConsoleWidth, 0);
-    clearLine(45, 5, ConsoleWidth, 0);
+    clearLine(25, 4, ConsoleWidth, 0);
+    clearLine(25, 5, ConsoleWidth, 0);
 
 
     if (VK_LEFT <= action && action <= VK_DOWN || action == VK_TAB) {
@@ -103,8 +103,15 @@ void mainMenuInteraction(WORD action) {
 
             if (text == "Exit")
                 exit(0);
-            else
+            else if (text == "Create a new data set")
                 addNewDataSet();
+            else if (text == "Reverse changes") {
+                reverseChanges();
+                updateUI();
+
+                setBTColor(61, 5, 15, 0);
+                cout << "Changes reversed.";
+            }
         }
 
     }
@@ -501,8 +508,8 @@ void viewDataInteraction(WORD action) {
             clearLine(0, y + 1, ConsoleWidth - 1, 0);
             clearLine(0, y + 2, ConsoleWidth - 1, 0);
 
-            drawViewDataPage();
         }
+        drawViewDataPage();
 
     }
     else if (action == VK_ESCAPE && !displayingMainList) { // return back to the main words list

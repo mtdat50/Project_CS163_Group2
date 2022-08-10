@@ -37,3 +37,4 @@ extern int curDataSetIndex;
 
 
 extern vector< dataSet > dataSetList;
+extern vector< dataSet > archivedData;

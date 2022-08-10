@@ -32,3 +32,5 @@ void loadData();
 
 /// ==============================================================================
 void deleteSaveFile(int index);
+
+void reverseChanges();
