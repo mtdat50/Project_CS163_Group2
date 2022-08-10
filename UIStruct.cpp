@@ -68,8 +68,11 @@ void rollList::move(WORD step) {
         break;
 
     case VK_LEFT:
-        if (curPage == 0)
+        if (curPage == 0) {
             curItem = n - (n % nItemsPerPage);
+            if (curItem == n)
+                curItem -= nItemsPerPage;
+        }
         else
             curItem += -indexInCurPage - nItemsPerPage;
         break;

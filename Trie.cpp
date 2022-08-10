@@ -1,12 +1,12 @@
 #include "Trie.h"
 
 node::node() {
-    fill(child, child + 256, nullptr);
+    fill(child, child + 128, nullptr);
     definition = "";
 }
 
 node::~node() {
-    for (int i = 0; i < 256; ++i) 
+    for (int i = 0; i < 128; ++i) 
         delete child[i];
 }
 
@@ -63,7 +63,7 @@ void trie::prefixSearch(string prefix, vector< pair< string, string > > &result)
         if (cur->definition != "")
             result.push_back({word, cur->definition});
         
-        for (int i = 0; i < 256; ++i) {
+        for (int i = 0; i < 128; ++i) {
             word += (char) i;
             dfs(cur->child[i], word, result);
             word.pop_back();
@@ -86,7 +86,7 @@ void trie::cleanMemory() {
         if (!cur) return 0;
 
         int words = root->definition != "";
-        for (int i = 0; i < 256; ++i) {
+        for (int i = 0; i < 128; ++i) {
             int childWords = clean(cur->child[i]);
 
             if (childWords == 0) cur->child[i] = nullptr;

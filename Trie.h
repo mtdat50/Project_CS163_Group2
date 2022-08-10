@@ -7,7 +7,7 @@ using namespace std;
 
 struct node
 {
-    node *child[256];
+    node *child[128];
     string definition;
 
     node();

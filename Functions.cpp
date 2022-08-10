@@ -36,10 +36,10 @@ void saveTrie(ofstream &fout, node *root) {
     if (!root) return;
 
     fout << root->definition << '\n';
-    for (int i = 0; i < 256; ++i)
-        fout << int (root->child[i] != nullptr) << " \n"[i == 255];
+    for (int i = 0; i < 128; ++i)
+        fout << int (root->child[i] != nullptr) << " \n"[i == 127];
 
-    for (int i = 0; i < 256; ++i)
+    for (int i = 0; i < 128; ++i)
         saveTrie(fout, root->child[i]);
 }
 
@@ -77,7 +77,7 @@ void loadTrie(ifstream & fin, node *root) {
     if (!root) return;
 
     getline(fin, root->definition);
-    for (int i = 0; i < 256; ++i) {
+    for (int i = 0; i < 128; ++i) {
         bool exist;
         fin >> exist;
 
@@ -85,7 +85,7 @@ void loadTrie(ifstream & fin, node *root) {
     }
     fin.ignore();
 
-    for (int i = 0; i < 256; ++i)
+    for (int i = 0; i < 128; ++i)
         loadTrie(fin, root->child[i]);
 }
 
