@@ -1,6 +1,7 @@
 #pragma once
 
 #include <filesystem>
+#include <random>
 
 #include "Data.h"
 #include "UIStruct.h"
@@ -11,3 +12,5 @@
 void mainMenuInteraction(WORD action);
 
 void viewDataInteraction(WORD action);
+
+void quizzPageInteraction(WORD action);

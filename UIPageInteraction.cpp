@@ -450,6 +450,10 @@ void viewDataInteraction(WORD action) {
             viewSearchHistory();
         else if (text == "Favorite list")
             viewFavoriteList();
+        else if (text == "Quizz") {
+            curPage = QUIZZ_PAGE;
+            updateUI();
+        }
 
 
     }
@@ -562,3 +566,102 @@ void viewDataInteraction(WORD action) {
 /// ==============================================================================================
 /// ==============================================================================================
 
+void generateQuizz() {
+
+    srand(time(NULL));
+
+    for (int i = 0; i < 4; ++i) {
+        size_t index;
+        bool ok;
+
+        do {
+            ok = true;
+            index = size_t (rand() * rand()) % dataSetList[curDataSetIndex].wordList.size();
+            
+            for (int j = 0; j < i; ++j)
+                if (index == quizzChoices[j])
+                    ok = false;
+
+        } while (!ok);
+
+        quizzChoices[i] = index;
+    }
+
+    quizzAnswer = rand() % 4;
+}
+
+void quizzPageInteraction(WORD action) {
+    dataSet &curDataSet = dataSetList[curDataSetIndex];
+    vector< pair< string, string > > &wordList = curDataSet.wordList;
+    rollList &viewList = quizzPage.viewList;
+    
+    if (VK_LEFT <= action && action <= VK_DOWN || action == VK_TAB) {
+        quizzPage.move(action);
+        drawQuizzPage();
+
+    }
+    else if (action == VK_RETURN && !quizzPage.focusOnViewList) {
+        string text = quizzPage.buttonList[quizzPage.curButton].text;
+
+        if (text == "Return") {
+            curPage = VIEW_DATA_PAGE;
+            updateUI();
+        }
+        else if (wordList.size() >= 4) {
+
+            generateQuizz();
+
+            if (text == "Word quizz") {
+                quizzPage.labelList.push_back(label("Word:", 50, 9, 9, 0));
+                quizzPage.labelList.push_back(label(wordList[ quizzChoices[quizzAnswer] ].first, 40, 10, 10, 0));
+
+                quizzPage.labelList.push_back(label("Definition:", 50, 14, 9, 0));
+                for (int i = 0; i < 4; ++i) {
+                    string choice;
+                    // cout << '\n' << char ('A' + i) << '\n';
+                    choice += char ('A' + i);
+                    choice += ":  " + curDataSet.wordList[ quizzChoices[i] ].second;
+
+                    viewList.buttonList.push_back(choice);
+                }
+            }
+            else if (text == "Definition quizz") {
+                quizzPage.labelList.push_back(label("Definition:", 50, 9, 9, 0));
+                quizzPage.labelList.push_back(label(wordList[ quizzChoices[quizzAnswer] ].second, 45, 10, 10, 0));
+
+                quizzPage.labelList.push_back(label("Word:", 50, 14, 9, 0));
+                for (int i = 0; i < 4; ++i){
+                    string choice;
+                    choice += char ('A' + i);
+                    choice += ":  " + curDataSet.wordList[ quizzChoices[i] ].first;
+
+                    viewList.buttonList.push_back(choice);
+                }
+            }
+
+            
+            for (int i = 9; i < ConsoleHeight - 1; ++i)
+                clearLine(0, i, ConsoleWidth, 0);
+            drawQuizzPage();
+        }
+    }
+    else if (action == VK_RETURN && quizzPage.focusOnViewList) {
+        quizzPage.labelList.clear();
+        viewList.buttonList.clear();
+
+        if (viewList.curItem == quizzAnswer) {// correct answer
+            setBTColor(50, 28, 10, 0);
+            cout << "Correct answer.";
+        }
+        else {// wrong answer
+            setBTColor(50, 28, 12, 0);
+            cout << "Wrong answer.";
+            setBTColor(50, 29, 12, 0);
+            string s = "The correct answer is ";
+            s += char('A' + quizzAnswer);
+            cout << s + ".";
+        }
+    }
+
+
+}

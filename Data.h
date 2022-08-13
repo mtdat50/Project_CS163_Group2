@@ -21,11 +21,12 @@ const int ConsoleWidth = 130,
           ConsoleHeight = 40;
 
 const int MAIN_MENU_PAGE = 1,
-          VIEW_DATA_PAGE = 2;
+          VIEW_DATA_PAGE = 2,
+          QUIZZ_PAGE = 3;
 
 extern UIPage mainMenuPage,
               viewDataPage,
-              quizPage;
+              quizzPage;
 
 extern bool displayingMainList,// used for VIEW_DATA_PAGE
             displayingSearchHistory,
@@ -38,3 +39,6 @@ extern int curDataSetIndex;
 
 extern vector< dataSet > dataSetList;
 extern vector< dataSet > archivedData;
+
+extern int quizzChoices[4];
+extern int quizzAnswer;

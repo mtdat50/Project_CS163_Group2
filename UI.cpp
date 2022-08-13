@@ -25,7 +25,7 @@ void createMainMenu() {
 }
 
 
-void createViewData() {
+void createViewDataPage() {
     viewDataPage.clear();
     dataSet &curDataSet = dataSetList[curDataSetIndex];
 
@@ -64,28 +64,26 @@ void createViewData() {
 }
 
 
-// void createQuizMenu() {
-//     quizPage.clear();
+void createQuizzPage() {
+    quizzPage.clear();
 
-//     vector< label > &bList = quizPage.buttonList;
-//     rollList &viewList = quizPage.viewList;
+    vector< label > &bList = quizzPage.buttonList;
 
-//     bList.push_back(label("Guess word", 25, 2, 15, 2));
-//     mainMenuPage.curButton = 0;
+    bList.push_back(label("Word quizz", 25, 2, 15, 0));
+    quizzPage.curButton = 0;
 
-//     bList.push_back(label("Guess definition", 55, 2, 15, 0));
-//     bList.push_back(label("Return", 85, 2, 15, 0));
+    bList.push_back(label("Definition quizz", 61, 2, 15, 0));
+    bList.push_back(label("Return", 92, 2, 15, 0));
 
+    rollList &viewList = quizzPage.viewList;
 
-//     viewList.x = 50;
-//     viewList.y = 9;
-//     viewList.nItemsPerPage = 10;
-//     viewList.highlightedBGColor = 2;
-//     viewList.textColor = 11;
-
-//     for (dataSet s : dataSetList)
-//         viewList.buttonList.push_back(s.name);
-// }
+    viewList.x = 40;
+    viewList.y = 15;
+    viewList.width = ConsoleWidth - viewList.x;
+    viewList.nItemsPerPage = 4;
+    viewList.highlightedBGColor = 2;
+    viewList.textColor = 15;
+}
 
 
 
@@ -120,6 +118,19 @@ void drawViewDataPage() {
     viewDataPage.draw();
 }
 
+void drawQuizzPage() {
+    setBTColor(1, 7, 15, 0);
+    for (int i = 1; i < ConsoleWidth - 1; ++i)
+        cout << '_';
+    
+
+    if (dataSetList[curDataSetIndex].wordList.size() < 4) {
+        setBTColor(50, 9, 11, 0);
+        cout << "There is not enough data.";
+    }
+    quizzPage.draw();
+}
+
 
 
 void updateUI() {
@@ -133,8 +144,13 @@ void updateUI() {
         break;
     
     case VIEW_DATA_PAGE:
-        createViewData();
+        createViewDataPage();
         drawViewDataPage();
+        break;
+
+    case QUIZZ_PAGE:
+        createQuizzPage();
+        drawQuizzPage();
         break;
     }
 }

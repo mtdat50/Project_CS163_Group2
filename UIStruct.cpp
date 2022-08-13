@@ -40,6 +40,7 @@ void rollList::clear() {
 
 
 void rollList::move(WORD step) {
+    if (buttonList.empty() && labelList.empty()) return;
         
     int n = buttonList.size(),
         curPage = curItem / nItemsPerPage,
@@ -82,8 +83,10 @@ void rollList::move(WORD step) {
 
 
 void rollList::draw(bool focusOn) {
+    if (buttonList.empty() && labelList.empty()) return;
+
     int n = buttonList.size(),
-        curPage = curItem / nItemsPerPage,
+        curPage = curItem / nItemsPerPage, //set values for viewList first to avoid errors
         indexInCurPage = curItem % nItemsPerPage;
 
     int begin = curItem - indexInCurPage;
@@ -150,7 +153,8 @@ void UIPage::draw() {
 
 void UIPage::move(WORD step) {
     if (step == VK_TAB) { // switching between main page and viewList
-        if (buttonList.empty() || (viewList.buttonList.empty() && viewList.labelList.empty()))
+        if ((!focusOnViewList && viewList.buttonList.empty() && viewList.labelList.empty()) ||
+            (focusOnViewList && buttonList.empty()))
             return;
         
         if (curButton == -1) curButton = 0;

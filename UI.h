@@ -7,12 +7,13 @@ using namespace std;
 
 
 void createMainMenu();
-void createViewData();
-void createQuizMenu();
+void createViewDataPage();
+void createQuizzPage();
 
 
 void drawMainMenu();
 void drawViewDataPage();
+void drawQuizzPage();
 
 
 void updateUI();

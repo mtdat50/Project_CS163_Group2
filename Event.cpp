@@ -14,6 +14,10 @@ void Controller(KEY_EVENT_RECORD key) {
         case VIEW_DATA_PAGE:
             viewDataInteraction(key.wVirtualKeyCode);
             break;
+        
+        case QUIZZ_PAGE:
+            quizzPageInteraction(key.wVirtualKeyCode);
+            break;
         }
     }
 }

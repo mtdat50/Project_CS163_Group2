@@ -3,7 +3,7 @@
 
 UIPage mainMenuPage,
        viewDataPage,
-       quizPage;
+       quizzPage;
 
 bool displayingMainList,
     displayingSearchHistory,
@@ -15,3 +15,6 @@ int curDataSetIndex;
 
 vector< dataSet > dataSetList;
 vector< dataSet > archivedData;
+
+int quizzChoices[4];
+int quizzAnswer;
