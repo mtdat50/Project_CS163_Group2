@@ -152,18 +152,23 @@ void deleteSaveFile(int index) {
     filesystem::remove(filepath_temp);
 
     for (int i = index + 1; ; ++i) {
-        string curName = "Data/data" + to_string(index);
+        string curName = "Data/data" + to_string(i);
         string curPath = curName + ".txt";
         string curPath_temp = curName + ".temp";
 
-        if (!filesystem::exists(filepath) && !filesystem::exists(filepath_temp)) //stop
+        if (!filesystem::exists(curPath) && !filesystem::exists(curPath_temp)) //stop
             break;
         
-        filesystem::rename(curPath, filepath);
-        filesystem::rename(curPath_temp, filepath_temp);
+        string OldP = curPath,
+            OldP_temp = curPath_temp;
 
-        filepath = curPath;
-        filepath_temp = curPath_temp;
+        if (filesystem::exists(curPath))
+            filesystem::rename(curPath, filepath);
+        if (filesystem::exists(curPath_temp))
+            filesystem::rename(curPath_temp, filepath_temp);
+
+        filepath = OldP;
+        filepath_temp = OldP_temp;
     }
 }
 

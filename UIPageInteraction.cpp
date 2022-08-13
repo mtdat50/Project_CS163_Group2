@@ -120,7 +120,11 @@ void mainMenuInteraction(WORD action) {
         auto buttonIt = mainMenuPage.viewList.buttonList.begin() + curItem;
         auto dataIt = dataSetList.begin() + curItem;
 
+        if (curItem == (int) mainMenuPage.viewList.buttonList.size() - 1)
+            --curItem;
         mainMenuPage.viewList.buttonList.erase(buttonIt);
+
+
         dataSetList.erase(dataIt);
 
         deleteSaveFile(curItem);
