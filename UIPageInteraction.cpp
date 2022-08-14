@@ -462,6 +462,8 @@ void viewDataInteraction(WORD action) {
 
     }
     else if (action == VK_RETURN && viewDataPage.focusOnViewList) { // edit a definition
+        if (!displayingMainList && !displayingFavoriteList) return;
+
         rollList &viewList = viewDataPage.viewList;
 
         int x = viewList.x + viewList.labelx;
@@ -491,10 +493,11 @@ void viewDataInteraction(WORD action) {
             string oldDef = viewList.labelList[curItem];
             pair< string, string > p = {word, oldDef};
 
+            auto it = find(curDataSet.wordList.begin(), curDataSet.wordList.end(), p);
+            if (it != curDataSet.wordList.end())
+                it->second = def;
 
-            (curDataSet.wordList.begin() + curItem)->second = def;
-
-            auto it = find(curDataSet.searchHistory.begin(), curDataSet.searchHistory.end(), p);
+            it = find(curDataSet.searchHistory.begin(), curDataSet.searchHistory.end(), p);
             if (it != curDataSet.searchHistory.end())
                 it->second = def;
 
